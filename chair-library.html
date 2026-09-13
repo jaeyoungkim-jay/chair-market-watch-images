@@ -262,14 +262,18 @@
   .hdr-menu-btn { display: none; }
   .sidebar-backdrop { display: none; }
   @media (max-width: 860px) {
-    .hdr { padding: 0 10px; gap: 8px; height: 52px; }
+    .hdr { padding: 0 8px; gap: 4px; height: 52px; }
     .hdr-menu-btn { display: flex; }
-    .hdr-title { font-size: 17px; margin-right: 0; }
-    .hdr-brand .icon-btn:not(.hdr-menu-btn) { display: none; }
+    .hdr-brand { gap: 0; }
+    .hdr-title { font-size: 15px; margin-right: 4px; }
+    .hdr-brand .icon-btn { width: 30px; height: 30px; }
     .hdr-search { max-width: none; }
     .hdr-stats { gap: 12px; }
     .hdr-stat .n { font-size: 0.95rem; }
     .hdr-stat .l { font-size: 8px; }
+
+    /* touch devices have no :hover, so these controls must stay visible instead of only appearing on hover */
+    .copy-btn, .gal-arrow { opacity: 1; }
 
     .sidebar {
       position: fixed; top: 52px; bottom: 0; left: -84%; width: 84%; max-width: 300px;
