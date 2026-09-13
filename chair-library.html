@@ -155,7 +155,8 @@
   .masonry { column-count: 4; column-gap: 16px; }
   @media (max-width: 1500px) { .masonry { column-count: 3; } }
   @media (max-width: 1100px) { .masonry { column-count: 2; } }
-  @media (max-width: 720px) { .masonry { column-count: 1; } }
+  @media (max-width: 720px) { .masonry { column-count: 2; column-gap: 10px; } }
+  @media (max-width: 380px) { .masonry { column-count: 2; column-gap: 8px; } }
 
   .card {
     break-inside: avoid; margin-bottom: 16px; background: var(--paper);
@@ -286,6 +287,15 @@
     }
 
     .main { padding: 14px 12px; }
+    .card .body { padding: 9px 10px 10px; }
+    .card .pname { font-size: 0.88rem; }
+    .card .brandname { font-size: 10px; margin-bottom: 6px; }
+    .tag { font-size: 8.5px; padding: 2px 5px; }
+    .card .price { font-size: 11px; }
+    .card .logochip { padding: 3px 6px; height: 17px; left: 7px; top: 7px; }
+    .card .logochip img { max-height: 11px; max-width: 56px; }
+    .copy-btn { width: 22px; height: 22px; top: 7px; right: 7px; }
+    .copy-btn svg { width: 11px; height: 11px; }
     .brand-info { flex-direction: column; padding: 16px; }
     .brand-info .bi-logo-wrap { width: 140px; height: 56px; }
     .bi-logo-row { flex-direction: row; align-items: center; }
