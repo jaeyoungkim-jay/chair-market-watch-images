@@ -755,12 +755,36 @@
 
   initClassifyDb();
 
+  function toPngBlob(srcBlob) {
+    return new Promise((resolve, reject) => {
+      if (srcBlob.type === "image/png") { resolve(srcBlob); return; }
+      const url = URL.createObjectURL(srcBlob);
+      const img = new Image();
+      img.onload = () => {
+        const canvas = document.createElement("canvas");
+        canvas.width = img.naturalWidth;
+        canvas.height = img.naturalHeight;
+        canvas.getContext("2d").drawImage(img, 0, 0);
+        canvas.toBlob((pngBlob) => {
+          URL.revokeObjectURL(url);
+          if (pngBlob) resolve(pngBlob); else reject(new Error("PNG 변환 실패"));
+        }, "image/png");
+      };
+      img.onerror = () => { URL.revokeObjectURL(url); reject(new Error("이미지 로드 실패")); };
+      img.src = url;
+    });
+  }
+
   async function copyImage(dataUri, btn) {
     if (!dataUri) return;
     try {
       const res = await fetch(dataUri);
-      const blob = await res.blob();
-      await navigator.clipboard.write([new ClipboardItem({ [blob.type]: blob })]);
+      const srcBlob = await res.blob();
+      // Chrome's Clipboard API only reliably accepts image/png for ClipboardItem —
+      // writing the source jpeg/webp blob type directly fails silently, leaving
+      // whatever was previously on the clipboard in place.
+      const pngBlob = await toPngBlob(srcBlob);
+      await navigator.clipboard.write([new ClipboardItem({ "image/png": pngBlob })]);
       btn.classList.add("copied");
       setTimeout(() => btn.classList.remove("copied"), 1200);
     } catch (e) {
