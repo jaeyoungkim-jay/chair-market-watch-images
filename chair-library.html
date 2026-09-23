@@ -901,11 +901,16 @@
       const brandsInCont = BRANDS.filter(b => b[2] === cont);
       if (!brandsInCont.length) return;
 
+      // 지역 줄은 브랜드 수, 그 아래 브랜드 줄은 제품 수를 보여 준다.
+      // 지금 필터에 걸리는 제품이 하나도 없는 브랜드는 줄도 숫자도 빼서 둘이 어긋나지 않게 한다.
+      const liveBrands = brandsInCont.filter(
+        b => DATA.some(p => matchFilters(p, { brand: b[0], cont: "all" })));
+      if (!liveBrands.length) return;
+
       const isOpen = expanded.has(cont);
       const header = document.createElement("button");
       header.className = "fb-cont" + (state.brand !== "all" && state.cont === cont ? " on" : "");
-      const contCnt = DATA.filter(p => matchFilters(p, { cont: cont, brand: "all" })).length;
-      header.innerHTML = `<span class="chev">${isOpen ? "&#9662;" : "&#9656;"}</span><span>${contLabel[cont]}</span><span class="cnt">${contCnt}</span>`;
+      header.innerHTML = `<span class="chev">${isOpen ? "&#9662;" : "&#9656;"}</span><span>${contLabel[cont]}</span><span class="cnt">${liveBrands.length}</span>`;
       header.onclick = () => {
         if (isOpen) expanded.delete(cont); else expanded.add(cont);
         renderBrandList();
@@ -913,7 +918,7 @@
       wrap.appendChild(header);
       if (!isOpen) return;
 
-      brandsInCont.forEach(b => {
+      liveBrands.forEach(b => {
         const btn = document.createElement("button");
         btn.className = "fb fb-sub" + (state.brand === b[0] ? " on" : "");
         const cnt = DATA.filter(p => matchFilters(p, { brand: b[0], cont: "all" })).length;
